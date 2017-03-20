@@ -23,4 +23,4 @@ class FastlaneClient(object):
 
 		response = requests.request("GET", url, headers=headers, params=querystring)
 
-		return response.text.status
+		return response.text
