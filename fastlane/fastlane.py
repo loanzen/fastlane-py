@@ -9,7 +9,7 @@ class FastlaneClient(object):
         Takes env, username and password as the parameters, where:
         evn = sandbox|production
         username & password: credentials of the API [allotted by
-                            fastlaneindia.com]
+                                                    fastlaneindia.com]
         """
         self.env = env
         self.username = username
