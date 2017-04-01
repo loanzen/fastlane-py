@@ -61,7 +61,6 @@ class FastlaneClient(object):
         Takes reg_no as the parameter to get the details of the vehicle from
         fastlane apis.
         """
-
         replacement_map = kwargs.get('replacement_map', None)
         querystring = {"regn_no": regn_no}
         headers = {
@@ -69,12 +68,8 @@ class FastlaneClient(object):
             'authorization': "Basic " + base64.b64encode(
                 self.username + ':' + self.password),
         }
-
         response = requests.request("GET", self.url, headers=headers,
                                     params=querystring)
         if response.status_code is not 200:
             raise FastlaneApiException(response.status_code, response.text)
-        elif response.json()['status'] == 101:
-            raise FastlaneApiException(response.status_code, response.json()['description'])
-
         return self.convert_format(response.json(), replacement_map)
