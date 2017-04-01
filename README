@@ -1,0 +1,10 @@
+Usage:
+from fastlane import FastlaneClient
+#env can be "sandbox" or "production"
+fastlane_client = FastlaneClient(env, Username, Password)
+vehicle_details_rto = fastlane_client.get_vehicle_details("DL10CB3330", replacement_map={
+                                   'hypth': {'hp_type': 'hypth_type'},
+                                   'insurance': {'comp_cd_desc': 'company_code'}
+                                   }
+)
+print vehicle_details_rto
