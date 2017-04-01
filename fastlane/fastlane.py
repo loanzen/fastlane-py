@@ -14,6 +14,15 @@ class FastlaneApiException(Exception):
         self.description = description
         super(FastlaneApiException, self).__init__(description)
 
+    def to_dict(self):
+        return {
+            'status': self.status,
+            'description': self.description
+        }
+
+    def __str__(self):
+        return super(FastlaneApiException, self).__str__()
+
 
 class FastlaneClient(object):
     def __init__(self, env, username, password):
@@ -56,11 +65,19 @@ class FastlaneClient(object):
                             vehicle_rto_new['results'][i][parent_key].pop(key, None)
         return AttrDict(vehicle_rto_new)
 
+    def convert_format_no_response(self, vehicle_rto, registration_no):
+        vehicle_rto_new = {}
+        vehicle_rto_new['registration_no'] = registration_no
+        vehicle_rto_new['status'] = vehicle_rto['status']
+        vehicle_rto_new['description'] = vehicle_rto['description']
+        return AttrDict(vehicle_rto_new)
+
     def get_vehicle_details(self, regn_no, **kwargs):
         """
         Takes reg_no as the parameter to get the details of the vehicle from
         fastlane apis.
         """
+
         replacement_map = kwargs.get('replacement_map', None)
         querystring = {"regn_no": regn_no}
         headers = {
@@ -68,8 +85,12 @@ class FastlaneClient(object):
             'authorization': "Basic " + base64.b64encode(
                 self.username + ':' + self.password),
         }
+
         response = requests.request("GET", self.url, headers=headers,
                                     params=querystring)
         if response.status_code is not 200:
             raise FastlaneApiException(response.status_code, response.text)
+        elif response.json()['status'] == 101:
+            return self.convert_format_no_response(response.json(), regn_no)
+
         return self.convert_format(response.json(), replacement_map)
