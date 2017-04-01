@@ -51,8 +51,9 @@ class FastlaneClient(object):
             for parent_key in vehicle_rto_new['results'][i].keys():
                 for key in vehicle_rto_new['results'][i][parent_key].keys():
                     if parent_key in replacement_map and key in replacement_map[parent_key]:
-                        vehicle_rto_new['results'][i][parent_key][replacement_map[parent_key][key]] = vehicle_rto_old['results'][i][parent_key][key]
-                        vehicle_rto_new['results'][i][parent_key].pop(key, None)
+                        if key != replacement_map[parent_key][key]:
+                            vehicle_rto_new['results'][i][parent_key][replacement_map[parent_key][key]] = vehicle_rto_old['results'][i][parent_key][key]
+                            vehicle_rto_new['results'][i][parent_key].pop(key, None)
         return AttrDict(vehicle_rto_new)
 
     def get_vehicle_details(self, regn_no, **kwargs):
