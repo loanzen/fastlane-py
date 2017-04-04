@@ -36,10 +36,9 @@ class FastlaneClient(object):
         self.password = password
         if env == "production":
             self.url = "https://web.fastlaneindia.com/vin/api/v1.2/vehicle"
-        elif env == "sandbox":
-            self.url = "https://web.fastlaneindia.com/sandbox/api/v1.2/vehicle"
         else:
-            raise ValueError('Invalid Environment %s', env)
+            env = "sandbox"
+            self.url = "https://web.fastlaneindia.com/sandbox/api/v1.2/vehicle"
 
     def convert_format(self, vehicle_rto, replacement_map):
         replacement_map_default = {'vehicle': {'regn_dt': 'registration_date', 'purchase_dt': 'purchase_date','regn_no':'registration_no',

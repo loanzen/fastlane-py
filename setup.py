@@ -10,7 +10,7 @@ requirements = [
 
 setup(
     name='fastlane',
-    version='0.1.0',
+    version='0.1.1',
     description="",
     long_description='',
     author="Kshitij Mittal",
