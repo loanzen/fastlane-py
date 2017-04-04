@@ -41,7 +41,7 @@ class FastlaneClient(object):
             self.url = "https://web.fastlaneindia.com/sandbox/api/v1.2/vehicle"
 
     def convert_format(self, vehicle_rto, replacement_map):
-        replacement_map_default = {'vehicle': {'regn_dt': 'registration_date', 'purchase_dt': 'purchase_date','regn_no':'registration_no',
+        replacement_map_default = {'vehicle': {'regn_dt': 'registration_date', 'purchase_dt': 'purchase_date', 'regn_no': 'registration_no',
                                                'state_cd': 'state', 'rto_cd': 'rto_code', 'rto_name': 'rto_name',
                                                'chasi_no': 'chasis_no', 'eng_no': 'engine_no', 'fla_vh_class_desc': 'vehicle_class_desc',
                                                'owner_sr': 'owner_serial_no', 'owner_cd_desc': 'owner_code', 'regn_type_desc': 'registration_type_desc',
