@@ -25,13 +25,14 @@ class FastlaneApiException(Exception):
 
 
 class FastlaneClient(object):
-    def __init__(self, env, username, password):
+    def __init__(self, env, username, password, **kwargs):
         """
         Takes env, username and password as the parameters, where:
         evn = sandbox|production
         username & password: credentials of the API [allotted by
                                                     fastlaneindia.com]
         """
+        self.proxies = None
         self.username = username
         self.password = password
         if env == "production":
@@ -39,6 +40,8 @@ class FastlaneClient(object):
         else:
             env = "sandbox"
             self.url = "https://web.fastlaneindia.com/sandbox/api/v1.2/vehicle"
+        if kwargs.get('proxies', None):
+            self.proxies = kwargs.get('proxies', None)
 
     def convert_format(self, vehicle_rto, replacement_map):
         replacement_map_default = {'vehicle': {'regn_dt': 'registration_date', 'purchase_dt': 'purchase_date', 'regn_no': 'registration_no',
@@ -84,9 +87,8 @@ class FastlaneClient(object):
             'authorization': "Basic " + base64.b64encode(
                 self.username + ':' + self.password),
         }
-
         response = requests.request("GET", self.url, headers=headers,
-                                    params=querystring)
+                                    params=querystring, proxies=self.proxies)
         if response.status_code is not 200:
             raise FastlaneApiException(response.status_code, response.text)
         elif response.json()['status'] == 101:
