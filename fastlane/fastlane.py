@@ -91,7 +91,9 @@ class FastlaneClient(object):
                                     params=querystring, proxies=self.proxies)
         if response.status_code is not 200:
             raise FastlaneApiException(response.status_code, response.text)
-        elif response.json()['status'] == 101:
+        elif (response.json()['status'] is not 100) and (response.json()['status'] is not 101):
+            raise FastlaneApiException(response.json()['status'], response.json()['description'])
+        elif response.json()['status'] is 101:
             return self.convert_format_no_response(response.json(), regn_no)
 
         return self.convert_format(response.json(), replacement_map)
